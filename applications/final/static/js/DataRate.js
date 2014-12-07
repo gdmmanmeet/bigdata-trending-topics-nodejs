@@ -1,4 +1,5 @@
 $(function(){
+    var dataSourceStarted = false;
     $('#startDataSource').click(function(){
 	    var dataRate = $('#dataRate').val();
 	    var dbName = $('#db_name').val();
@@ -10,6 +11,9 @@ $(function(){
 	            site_name : siteName
 	        });
             $('#startDataSource').hide();
+            $('#db_name').attr('disabled','disabled');
+            $('#site_name').attr('disabled','disabled');
+            dataSourceStarted = true;
         }
     });
     var validateStartDataSource = function(){
@@ -19,18 +23,23 @@ $(function(){
         if (!dbName)
         {
             $('#db_name').addClass('error');
-            return 0;
+            return false;
         }
         else
             $('#db_name').removeClass('error');
         if (!siteName)
         {
             $('#site_name').addClass('error');
-            return 0;
+            return false;
         }
         else
             $('#site_name').removeClass('error');
-        return 1;
+        return true;
     }
+
+    $('#dataRate').change(function(){
+        if (dataSourceStarted)
+            $.post('/final/source/start',{data_rate : $('#dataRate').val()});
+    });
 });
 
