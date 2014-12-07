@@ -1,14 +1,11 @@
 $(function(){
     var dataSourceStarted = false;
     $('#startDataSource').click(function(){
-	    var dataRate = $('#dataRate').val();
-	    var dbName = $('#db_name').val();
-	    var siteName = $('#site_name').val();
         if (validateStartDataSource()){
 	        $.post('/final/source/start',{
-	            data_rate : dataRate,
-	            db_name : dbName,
-	            site_name : siteName
+	            data_rate : $('#dataRate').val(),
+	            db_name : encodeURIComponent($('#db_name').val().trim()),
+	            site_name : encodeURIComponent($('#site_name').val().trim())
 	        });
             $('#startDataSource').hide();
             $('#db_name').attr('disabled','disabled');

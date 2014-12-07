@@ -11,8 +11,8 @@ var throwData = function ( segments, response, postData ){
             GLOBAL.datasourceInterval = util.setInterval(function(datarate){
 	            bigDataStore.fetch( throwMessages,{
 	                'data_rate':datarate,
-	                'db_name' : parsedData['db_name'],
-	                'collection_name' : parsedData['site_name']
+	                'db_name' : decodeURIComponent(parsedData['db_name']),
+	                'site_name' : decodeURIComponent(parsedData['site_name'])
                 });
             },parsedData['data_rate']);
         else
