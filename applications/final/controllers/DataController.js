@@ -1,5 +1,6 @@
 var querystring = require('querystring');
 var tagModel = require('../models/Tag.js');
+var messagesModel = require('../models/Message.js');
 
 var handledata = function( segments, response, postData ){
    if (postData){
@@ -26,6 +27,10 @@ var handledata = function( segments, response, postData ){
       response.write(" 404 not found");
       response.end();
    }
+}
+
+var storeMessages = function( options ){
+    messagesModel.store(function(){},options);
 }
 
 exports.handle = handledata;

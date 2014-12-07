@@ -1,10 +1,12 @@
 var mongodb = require('mongodb');
 var access = new mongodb.Server('localhost',27017,{});
-var client = [];
+var client = '';
 
 var getConnection = function(dbName,callback){
-    if (client[dbName])
-        callback(client[dbName]);
+    if (client){
+        client.databaseName = dbName;
+        callback(client);
+    }
     else {
         new mongodb.Db(dbName,access,{safe:true,auto_reconnect:true}).open(function(err,c){
             if (err) {
@@ -12,8 +14,8 @@ var getConnection = function(dbName,callback){
             }
             else {
                 console.log('database '+ dbName + ' connected');
-                client[dbName] = c;
-                callback(client[dbName]);
+                client = c;
+                callback(client);
             }
         });
     }
