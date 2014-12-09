@@ -4,6 +4,7 @@ handle['source'] = __dirname+'/controllers/DataSource.js';
 handle['query'] = __dirname+'/controllers/QueryController.js';
 handle['static'] = __dirname+'/controllers/StaticController.js';
 handle['sink'] = __dirname+'/controllers/DataController.js';
+handle['defaultController'] = __dirname + '/controllers/ApplicationController.js';
 
 var APP_URL = '/final/';
 

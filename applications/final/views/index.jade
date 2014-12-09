@@ -1,0 +1,52 @@
+doctype html
+html(lang="en")
+    head
+        title Trends
+        meta( name = "viewport" content = "width=device-width, initial-scale=1.0" )
+        link( href = staticUrl + "css/bootstrap.css" rel="stylesheet" type="text/css")
+        link( rel = "stylesheet" type = "text/css" href = staticUrl + "css/bootstrap-responsive.css" )
+        link( rel = "stylesheet" type = "text/css" href = staticUrl + "css/index.css" )
+    body
+        div( class = "container-fluid hero-unit" )
+            div( class = "row-fluid" )
+                div( class = "span12" )
+                        h1( class = "page_heading") Welcome to the application !!!
+            div( class = "row-fluid" )
+                    h2( class = "span12" ) Data Source Settings
+            div( class = "row-fluid" )
+                label( for = "dataRate" class = "span5") Select the datarate
+                input( type = "range" id = "data_rate" name = "dataRate" max = 500 class = "span5" )
+                br
+                br
+            div( class = "row-fluid" )
+                h2( class = "span12" ) Data Handler Settings
+            div( class = "row-fluid" )
+                label( for = "approach" class = "span5" ) Select the algorithm approach
+                select( id = "approach" name  "approach" class = "span5" )
+                    option z-value
+                br
+                br
+            div( class = "row-fluid" )
+                label( for = "db_name" class = "span5" ) Enter the database name
+                input( id = "db_name" name = "db_name" placeholder = "database name" class = "span5" )
+                br
+                br
+            div( class = "row-fluid" )
+                label( for = "site_name" class = "span5" ) Enter the site name
+                input( id = "site_name" name = "site_name" class = "span5" placeholder = "site name" )
+                br
+                br
+            div( class = "row-fluid" )
+                label( for = "score_rate" class = "span5" ) Select the time after which the trends are calculated
+                input( id = "score_rate" name = "score_rate" type = "range" min = 15 max = 600 class = "span5" )
+                br
+                br
+            div( class = "row-fluid" )
+                label( for = "garbage_collector_rate" class = "span5" ) Select the garbage collector rate.
+                input( id = "garbage_collector_rate" name = "garbage_collector_rate" type = "range" min = 30 max = 3600 class = "span5" )
+                br
+                br
+                button( class = "span4 btn btn-primary pull-right" id = "start_app" ) Start Application >>
+        script(src = staticUrl + "js/jquery-2.1.0.min.js" )
+        script(src = staticUrl + "js/bootstrap.min.js" )
+        script(src = staticUrl + "js/index.js" )
