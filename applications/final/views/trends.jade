@@ -1,51 +1,6 @@
-doctype html
-html(lang="en")
-    head
-        title Trends
-        link( href = staticUrl + "css/bootstrap.min.css" rel="stylesheet" type="text/css")
-        link(rel = "stylesheet" type="text/css" href = staticUrl + "css/custom.css" )
-    body
-        h1 Trending Topics in big data
-        table
-            tr
-                td
-                    h2 Data Source Settings
-                    br
-                    label(for="dataRate") Select the data rate
-                    br
-                    input(type = "range" id = "dataRate" max = 500)
-                    br
-                    br
-                    input(type = "button" id = "startDataSource" value = "start data source")
-                td
-                    h2 Data Handler Settings
-                    br
-                    label(for="db_name") Enter the database name
-                    br
-                    input(type = "text", placeholder = "database name" id ="db_name")
-                    br
-                    br
-                    label(for = "site_name") Enter the site name
-                    br
-                    input(type = "text", placeholder = "collection name" id ="site_name")
-                    br
-                    br
-                    label(for="data_handler_rate") Select the data handler rate
-                    br
-                    input(type = "range" id="data_handler_rate")
-                    br
-                    br
-                    label(for="garbage_collector_rate") Select the garbage collector rate
-                    br
-                    input(type="range" id ="garbage_collector_rate")
-                td
-                    h2 Trending topics
-                    br
-                    br
-                    input(type = "button", value = "refresh")
-                    br
-                    br
-                    input(type = "button", value = "Take snapshot")
-        script(src = staticUrl + "js/jquery-2.1.0.min.js" )
-        script(src = staticUrl + "js/bootstrap.min.js" )
-        script(src = staticUrl + "js/DataRate.js" )
+h2 Trending topics
+div
+    for tag in tags
+        a( href = '/final/query/messages/' + db_name + '/' + site_name + '/' + tag.text ) #{tag.text} z-score : #{tag['z-score']}
+        br
+        br
