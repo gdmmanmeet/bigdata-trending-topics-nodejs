@@ -13,9 +13,9 @@ html(lang="en")
                         h1( class = "page_heading") Welcome to the application !!!
             div( class = "row-fluid" )
                     h2( class = "span12" ) Data Source Settings
-            div( class = "row-fluid" )
-                label( for = "dataRate" class = "span5") Select the datarate
-                input( type = "range" id = "data_rate" name = "dataRate" max = 500 class = "span5" )
+             div( class = "row-fluid" )
+                label( for = "data_rate" class = "span5") Select the datarate
+                input( type = "range" id = "data_rate" name = "dataRate" max = 500 class = "span5" data-show-value="true" )
                 br
                 br
             div( class = "row-fluid" )
@@ -38,12 +38,7 @@ html(lang="en")
                 br
             div( class = "row-fluid" )
                 label( for = "score_rate" class = "span5" ) Select the time after which the trends are calculated
-                input( id = "score_rate" name = "score_rate" type = "range" min = 15 max = 600 class = "span5" )
-                br
-                br
-            div( class = "row-fluid" )
-                label( for = "garbage_collector_rate" class = "span5" ) Select the garbage collector rate.
-                input( id = "garbage_collector_rate" name = "garbage_collector_rate" type = "range" min = 30 max = 3600 class = "span5" )
+                input( id = "score_rate" name = "score_rate" type = "range" min = 1 max = 10 class = "span5" )
                 br
                 br
                 button( class = "span4 btn btn-primary pull-right" id = "start_app" ) Start Application >>

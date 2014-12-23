@@ -13,14 +13,19 @@ $( function() {
     };
 
     $( '#start_app' ).click( function() {
-        var inputs = [ 'data_rate', 'approach', 'db_name', 'site_name', 'score_rate', 'garbage_collector_rate' ];
+        var inputs = [ 'data_rate', 'approach', 'db_name', 'site_name', 'score_rate'];
         if ( validateInput( inputs ) ) {
             var data = {};
             inputs.forEach(function(input){
                 data[ input ] = $( '#' + input ).val().trim();
             });
             $.post( '/final/source/start', data );
-            $('body').load( '/final/defaultController/dashboard' );
+            var data_rate_val = $('#data_rate').val();
+            var score_rate_val = $('#score_rate').val();
+            $('.hero-unit').load( '/final/defaultController/dashboard', function(){
+                $( '#data_rate' ).val( data_rate_val );
+                $( '#score_rate' ).val( score_rate_val );
+            } );
         }
     });
 });

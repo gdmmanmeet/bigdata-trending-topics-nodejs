@@ -7,6 +7,18 @@ var throwData = function ( segments, response, postData ){
     response.writeHead( 200, { "content-type" : "text/html" } );
     if ( postData ) {
 	    var parsedData  = querystring.parse(postData);
+        var req = http.request({
+            "host" : "saheb",
+            "hostname" : "saheb",
+            "port" : "8888",
+            "method" : "POST",
+            "path" : "/final/sink/set_cron"
+        });
+        req.on( 'error', function( e ){
+            console.log( e );
+        });
+        req.write( postData );
+        req.end();
         if (!GLOBAL.datasourceInterval)
             GLOBAL.datasourceInterval = util.setInterval(function(datarate){
 	            bigDataStore.fetch( throwMessages,{
@@ -27,11 +39,11 @@ var throwData = function ( segments, response, postData ){
 var throwMessages = function(options){
     var data = options['data'];
     var req = http.request({
-	"host":"saheb",
-	"hostname":"saheb",
-	"port":"8888",
-	"method":"POST",
-	"path":"/final/sink/handle"
+	    "host":"saheb",
+	    "hostname":"saheb",
+	    "port":"8888",
+	    "method":"POST",
+	    "path":"/final/sink/handle"
     });
     req.on('error',function(e){
 	console.log('problem with request'+e.message);

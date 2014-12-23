@@ -1,0 +1,33 @@
+div( class = "row-fluid" )
+    div( class = "span7" )
+        ul( id ="settings_tab" class = "nav nav-tabs" )
+            li( class = "active" )
+                a( href = "#data_source_settings" data-toggle = "tab" ) Data Source Settings
+            li
+                a( href = "#data_handler_settings" data-toggle = "tab" ) Data Handler Settings
+            li
+                a( href = "#trend_list" data-toggle = "tab" ) Trending Topics
+        div( class = "tab-content" )
+            div( id = "data_source_settings" class = "tab-pane active" )
+                h2 Data Source Settings
+                div( class = "row-fluid" )
+                    label( for = "data_rate" class = "span5") Change data rate
+                    input( type = "range" id = "data_rate" name = "data_rate" max = 500 class = "span5" )
+                    br
+                    br
+
+            div( id = "data_handler_settings" class = "tab-pane" )
+                h2 Data Handler Settings
+                div( class = "row-fluid" )
+                    label( for = "score_rate" class = "span5" ) change the time after which trends are calculated
+                    input( type = "range" id = "score_rate" name = "score_rate" min = 1 max = 10 class = "span5" )
+                    br
+                    br
+            div( id = "trend_list" class = "tab-pane" )    trend list
+
+div( class = "row-fluid" )
+    div( id = "snapshot_widget" )
+        h2 Snapshots
+
+script( src = staticUrl + 'js/dashboard.js' )
+        
