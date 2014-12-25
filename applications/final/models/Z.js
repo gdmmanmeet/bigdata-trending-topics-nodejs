@@ -45,6 +45,22 @@ var fetchTrends = function( callback, options ) {
     } );
 }
 
+var storeData = function( callback, options ) {
+    conn.getConnection( options['db_name'], function( client ) {
+        var collection = mongodb.Collection( client, options['site_name'] + '_z' );
+        var tags = options['tags'];
+        tags.forEach( function( tag ) {
+            collection.update( tag, { '$inc' : { 'count' : 1 } }, { 'upsert' : true }, function( err, numOfRows ) {
+                if ( err ) {
+                    console.log( err );
+                }
+            } );
+        } );
+        callback( options );
+    } );
+}
+
 exports.upsert = upsert;
 exports.fetchAll = fetchAll;
 exports.fetchTrends = fetchTrends;
+exports.store = storeData;

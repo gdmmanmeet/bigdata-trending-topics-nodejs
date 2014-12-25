@@ -21,7 +21,7 @@ var handledata = function( segments, response, postData ){
            });
        });
        options['tags'] = tags;
-       tagModel.store(storeMessages,options);
+       zModel.store(storeMessages,options);
        response.end();
    }
    else{
@@ -45,6 +45,10 @@ var setCron = function( segments, response, postData ) {
                 console.log('\n\n\n\n ******** cron started *********\n\n\n\n');
                 zModel.fetchAll( updateZValues, parsedData );
             }, null, true );
+        else
+        {
+
+        }
         response.end();
     }
     else {
@@ -57,48 +61,30 @@ var setCron = function( segments, response, postData ) {
 var updateZValues = function( options ) {
     var scores = options[ 'scores' ];
     scores.forEach( function( score ) {
-        tagModel.fetchAndRemove( function( options ) {
-            tags = options['tags'];
-            tags.forEach( function( tag ) {
-                score[ 'mean' ] = ( score.total * score.mean + tag.count )/( score.total + 1 );
-                score[ 'variance' ] = Math.sqrt( ( score.total * score.variance * score.variance + tag.count * tag.count ) / ( score.total + 1 ) );
-                score[ 'total' ]++;
-                score[ 'z-score' ] = ( tag.count - score['mean' ] ) / score.variance;
-                zModel.upsert( function(){}, {
-                    "db_name" : options['db_name'],
-                    "site_name" : options['site_name'],
-                    "score" : score
-                } );
-            });
-        },{
-            "db_name" : options['db_name'],
-            "site_name" : options['site_name'],
-            "score" : score,
-            "condition" : { "text" : score['text'] }
-        });
-    });
-    tagModel.fetchAll( function( options ){
-        var tags = options['tags'];
-        tags.forEach( function( tag ) {
+        if ( score['mean'] ) {
+            score[ 'mean' ] = ( score.total * score.mean + score.count )/( score.total + 1 );
+            score[ 'variance' ] = Math.sqrt( ( score.total * score.variance * score.variance + score.count * score.count ) / ( score.total + 1 ) );
+            score[ 'total' ]++;
+            score[ 'z-score' ] = ( score.count - score['mean' ] ) / score.variance;
+            score['count'] = 0;
             zModel.upsert( function(){}, {
                 "db_name" : options['db_name'],
                 "site_name" : options['site_name'],
-                "score" : {
-                    "text":tag.text,
-                    "mean":tag.count,
-                    "variance":tag.count,
-                    "total":1,
-                    "z-score":0
-                }
-            });
-        });
-        tagModel.drop( function(){}, {
-            "db_name" : options['db_name'],
-            "site_name" : options['site_name']
-        });
-    },{
-        "db_name" : options['db_name'],
-        "site_name" : options['site_name']
+                "score" : score
+            } );
+        }
+        else {
+            score['mean'] = score.count;
+            score['variance'] = score.count;
+            score['total'] = 1;
+            score['z-score'] = 0;
+            score['count']=0;
+            zModel.upsert( function(){}, {
+                'db_name' : options['db_name'],
+                'site_name' : options['site_name'],
+                'score' : score
+            } );
+        }
     });
 }
 
