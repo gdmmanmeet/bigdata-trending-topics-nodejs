@@ -1,8 +1,8 @@
 var querystring = require('querystring');
 var cron = require( 'cron' );
-var zModel = require( '../models/Z.js' );
-var tagModel = require('../models/Tag.js');
-var messagesModel = require('../models/Message.js');
+var zModel = require( '../models/Z' );
+var messagesModel = require('../models/Message');
+var iirModel = require( '../models/IIR');
 
 var handledata = function( segments, response, postData ){
    if (postData){
@@ -40,14 +40,18 @@ var setCron = function( segments, response, postData ) {
         response.writeHead( 200, { "Content-Type" : "text/html" } );
         var parsedData = querystring.parse( postData );
         console.log( parsedData['score_rate']);
-        if ( !GLOBAL.dataControllerCron )
-            GLOBAL.dataControllerCron = new cron.CronJob (parsedData[ 'score_rate' ] + ' * * * * *', function() {
+        if ( !GLOBAL.dataControllerCron ) {
+            GLOBAL.dataControllerCron = new cron.CronJob ( '1 */' + parsedData['score_rate'] +' * * * *', function() {
                 console.log('\n\n\n\n ******** cron started *********\n\n\n\n');
                 zModel.fetchAll( updateZValues, parsedData );
             }, null, true );
+            GLOBAL.dataControllerCron.start();
+        }
         else
         {
-
+            newCronTime = new cron.CronTime( '1 */' + parsedData['score_rate'] + ' * * * *' );
+            GLOBAL.dataControllerCron.setTime( newCronTime );
+            GLOBAL.dataControllerCron.start();
         }
         response.end();
     }
