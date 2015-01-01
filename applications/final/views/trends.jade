@@ -1,6 +1,9 @@
 h2 Trending topics
 div
     for tag in tags
-        a( href = '/final/query/messages/' + db_name + '/' + site_name + '/' + tag.text ) #{tag.text} z-score : #{tag['z-score']}
-        br
+        a( href = "#" class = '/final/query/messages/' + db_name + '/' + site_name + '/' + tag.text ) #{tag.text} 
+        if approach == 'z_approach'
+            span  z-score : #{ tag['z-score'] }
+        if approach == 'iir_approach'
+            span iir-score : #{ tag['iir-score'] }
         br

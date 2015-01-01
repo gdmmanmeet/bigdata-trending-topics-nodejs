@@ -26,12 +26,14 @@ $( function() {
             var score_rate_val = $('#score_rate').val();
             dbName  = $( '#db_name' ).val().trim();
             siteName = $( '#site_name' ).val().trim();
+            approach = $( '#approach' ).val().trim();
             $('.hero-unit').load( '/final/defaultController/dashboard', function(){
                 $( '#data_rate' ).val( data_rate_val );
                 $( '#score_rate' ).val( score_rate_val );
                 $.post('/final/query/trends', {
                     'db_name' : dbName,
-                    'site_name' : siteName
+                    'site_name' : siteName,
+                    'approach' : approach
                 }, function ( data ) {
                     if ( data ) {
                         $('#trend_list').html( data );

@@ -21,7 +21,14 @@ var handledata = function( segments, response, postData ){
            });
        });
        options['tags'] = tags;
-       zModel.store(storeMessages,options);
+       switch( parsedData['approach'] ) {
+           case 'z_approach' :
+               zModel.store( storeMessages, options );
+               break;
+           case 'iir_approach' :
+               iirModel.store( storeMessages, options );
+               break;
+       }
        response.end();
    }
    else{
@@ -43,7 +50,14 @@ var setCron = function( segments, response, postData ) {
         if ( !GLOBAL.dataControllerCron ) {
             GLOBAL.dataControllerCron = new cron.CronJob ( '1 */' + parsedData['score_rate'] +' * * * *', function() {
                 console.log('\n\n\n\n ******** cron started *********\n\n\n\n');
-                zModel.fetchAll( updateZValues, parsedData );
+                switch( parsedData['approach'] ) {
+                    case 'z_approach' :
+                        zModel.fetchAll( updateZValues, parsedData );
+                        break;
+                    case 'iir_approach' :
+                        iirModel.fetchAll( updateIIRValues, parsedData );
+                        break;
+                }
             }, null, true );
             GLOBAL.dataControllerCron.start();
         }
@@ -84,6 +98,30 @@ var updateZValues = function( options ) {
             score['z-score'] = 0;
             score['count']=0;
             zModel.upsert( function(){}, {
+                'db_name' : options['db_name'],
+                'site_name' : options['site_name'],
+                'score' : score
+            } );
+        }
+    });
+}
+
+var updateIIRValues = function( options ) {
+    var scores = options[ 'scores' ];
+    scores.forEach( function( score ) {
+        if ( score['iir-score'] ) {
+            score['iir-score'] = score.count * 0.95 + score['iir-score']*0.05;
+            score['count'] = 0;
+            iirModel.upsert( function(){}, {
+                "db_name" : options['db_name'],
+                "site_name" : options['site_name'],
+                "score" : score
+            } );
+        }
+        else {
+            score['iir-score'] = score.count;
+            score['count']=0;
+            iirModel.upsert( function(){}, {
                 'db_name' : options['db_name'],
                 'site_name' : options['site_name'],
                 'score' : score

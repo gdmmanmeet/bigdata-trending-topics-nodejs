@@ -15,7 +15,8 @@ $( function() {
     setInterval( function() {
         $.post('/final/query/trends', {
             'db_name' : dbName,
-            'site_name' : siteName
+            'site_name' : siteName,
+            'approach' : approach
         }, function ( data ) {
             if ( data ) {
                 $('#trend_list').html( data );
