@@ -46,4 +46,19 @@ var fetchTrends = function( segments, response, postData ) {
     }
 }
 
+var fetchMessages = function( segments, response, postData ) {
+    response.writeHead( 200, { "content-type" : "text/html" } );
+    messageModel.fetchMessages( function( options ) {
+        var messages = options['messages'];
+        var html = jade.renderFile( templateDirectory + 'messages.jade', { 'messages' : messages } );
+        response.write( html );
+        response.end();
+    }, {
+        'db_name' : segments[4],
+        'site_name' : segments[5],
+        'tag' : segments[6]
+    } );
+}
+
 exports.trends = fetchTrends;
+exports.messages = fetchMessages;

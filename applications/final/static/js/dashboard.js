@@ -12,6 +12,11 @@ $( function() {
         $.post( '/final/sink/set_cron', { 'score_rate' : $('#score_rate').val() } );
     } );
 
+    $( '#trend_list a' ).on( 'click', function() {
+        $( '#trend_list' ).load( $(this).attr('href') );
+        return false;
+    });
+
     setInterval( function() {
         $.post('/final/query/trends', {
             'db_name' : dbName,
@@ -20,6 +25,10 @@ $( function() {
         }, function ( data ) {
             if ( data ) {
                 $('#trend_list').html( data );
+                $( '#trend_list a' ).on( 'click', function() {
+                    $( '#trend_list' ).load( $(this).attr('href') );
+                    return false;
+                });
             }
         } );
     }, 30000 );

@@ -37,6 +37,10 @@ $( function() {
                 }, function ( data ) {
                     if ( data ) {
                         $('#trend_list').html( data );
+                        $( '#trend_list a' ).on( 'click', function() {
+                            $( '#trend_list' ).load( $(this).attr('href') );
+                            return false;
+                        });
                     }
                 } );
             } );
