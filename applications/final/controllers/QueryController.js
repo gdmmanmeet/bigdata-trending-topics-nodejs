@@ -32,11 +32,14 @@ var fetchTrends = function( segments, response, postData ) {
                 'approach' : options['approach']
             } );
             response.write( html );
+            var currentTime = new Date().getTime() - options['request_time'];
+            GLOBAL.performanceTagFetchTime = ( GLOBAL.performanceTagFetchTime * GLOBAL.performanceTagFetchTotal + currentTime ) / ( ++GLOBAL.performanceTagFetchTotal );
             response.end();
         }, {
             'db_name' : parsedData['db_name'],
             'site_name' : parsedData['site_name'],
-            'approach' : approach
+            'approach' : approach,
+            'request_time' : new Date().getTime()
         } );
     }
     else {
@@ -52,6 +55,8 @@ var fetchMessages = function( segments, response, postData ) {
         var messages = options['messages'];
         var html = jade.renderFile( templateDirectory + 'messages.jade', { 'messages' : messages } );
         response.write( html );
+        var currentTime = new Date().getTime() - options['request_time'];
+        GLOBAL.performanceMessageFetchTime = ( GLOBAL.performanceMessageFetchTime * GLOBAL.performanceMessageFetchTotal + currentTime ) / ( ++GLOBAL.performanceMessageFetchTotal );
         response.end();
     }, {
         'db_name' : segments[4],
@@ -60,5 +65,17 @@ var fetchMessages = function( segments, response, postData ) {
     } );
 }
 
+var performanceFactors = function( segments, response, postData ) {
+    var html = jade.renderFile( templateDirectory + 'performance.jade', {
+       'message_fetch_time' : GLOBAL.performanceMessageFetchTime,
+       'tag_fetch_time' : GLOBAL.performanceTagFetchTime,
+       'ram' : GLOBAL.performanceRam
+    } );
+    response.writeHead( 200, { 'content-type' : 'text/html' } );
+    response.write( html );
+    response.end();
+}
+
 exports.trends = fetchTrends;
 exports.messages = fetchMessages;
+exports.performance = performanceFactors;

@@ -1,0 +1,17 @@
+div
+    h2 Performance Factors
+    table
+        tr
+            td Average Message Fetch Time :
+            td #{ message_fetch_time }
+        tr
+            td Average Tag Fetch Time :
+            td #{ tag_fetch_time }
+        tr
+            td Average Ram Usage:
+            td 
+                #{ ram.rss / 1000000 } MB rss
+                br
+                #{ ram.heapUsed / 1000000 } MB heap used
+                br
+                #{ ram.heapTotal / 1000000 } MB total heap

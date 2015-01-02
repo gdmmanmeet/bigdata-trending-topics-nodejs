@@ -74,3 +74,8 @@ select, input
 
 #trend_list a:hover{
     color: #C0CC09;
+}
+
+#performance_widget {
+    padding-top : 5%;
+}

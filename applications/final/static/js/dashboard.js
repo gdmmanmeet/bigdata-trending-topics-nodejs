@@ -31,6 +31,7 @@ $( function() {
                 });
             }
         } );
+        $( '#performance_widget' ).load( '/final/query/performance' );
     }, 30000 );
 
 } );

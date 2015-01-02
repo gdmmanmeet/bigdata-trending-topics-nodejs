@@ -12,7 +12,8 @@ var handledata = function( segments, response, postData ){
        var options = {
            'db_name' : parsedData['db_name'],
            'site_name' : parsedData['site_name'],
-           'messages' : messages
+           'messages' : messages,
+           'request_time' : new Date().getTime()
        };
        var tags = [];
        messages.forEach(function(tweet){
@@ -39,7 +40,10 @@ var handledata = function( segments, response, postData ){
 }
 
 var storeMessages = function( options ){
-    messagesModel.store(function(){},options);
+    messagesModel.store(function( options ){
+        var currentTime = new Date().getTime() - options['storage_time'];
+        GLOBAL.performanceStorageTime = ( GLOBAL.performanceStorageTime * GLOBAL.performanceStorageTimeTotal + currentTime ) / ( ++GLOBAL.performanceStorageTimeTotal );
+    },options);
 }
 
 var setCron = function( segments, response, postData ) {

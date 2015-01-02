@@ -8,5 +8,12 @@ handle["datasource"] = './applications/dynamicDatasource/router';
 handle["dynamicdata"] = './applications/dynamicdata/router';
 handle['final'] = './applications/final/router';
 
+GLOBAL.performanceRam = {
+    'rss' : 0,
+    'heapTotal' : 0,
+    'heapUsed' : 0
+};
+GLOBAL.performanceRamTotal = 0;
+
 server.start(router.route,handle);
 

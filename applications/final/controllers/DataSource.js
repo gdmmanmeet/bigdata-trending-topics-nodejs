@@ -1,5 +1,5 @@
 var bigDataStore = require('../models/BigDataStore');
-var util = require('./util.js');
+var util = require('./util');
 var querystring = require('querystring');
 var http = require('http');
 
@@ -19,7 +19,7 @@ var throwData = function ( segments, response, postData ){
         });
         req.write( postData );
         req.end();
-        if (!GLOBAL.datasourceInterval)
+        if (!GLOBAL.datasourceInterval) {
             GLOBAL.datasourceInterval = util.setInterval(function(datarate){
 	            bigDataStore.fetch( throwMessages,{
 	                'data_rate':datarate,
@@ -28,6 +28,11 @@ var throwData = function ( segments, response, postData ){
                     'approach' : decodeURIComponent( parsedData['approach'] )
                 });
             },parsedData['data_rate']);
+            GLOBAL.performanceMessageFetchTime = 0;
+            GLOBAL.performanceMessageFetchTotal = 0;
+            GLOBAL.performanceTagFetchTime = 0;
+            GLOBAL.performanceTagFetchTotal = 0;
+        }
         else
             GLOBAL.datasourceInterval.changeDataRate(parsedData['data_rate']);
     }
