@@ -3,6 +3,7 @@ var cron = require( 'cron' );
 var zModel = require( '../models/Z' );
 var messagesModel = require('../models/Message');
 var iirModel = require( '../models/IIR');
+var hybridModel = require( '../models/Hybrid' );
 
 var handledata = function( segments, response, postData ){
    if (postData){
@@ -29,6 +30,8 @@ var handledata = function( segments, response, postData ){
            case 'iir_approach' :
                iirModel.store( storeMessages, options );
                break;
+            case 'hybrid_approach' :
+               hybridModel.store( storeMessages, options );
        }
        response.end();
    }
@@ -61,6 +64,8 @@ var setCron = function( segments, response, postData ) {
                     case 'iir_approach' :
                         iirModel.fetchAll( updateIIRValues, parsedData );
                         break;
+                    case 'hybrid_approach' :
+                        hybridModel.fetchAll( updateHybridValues, parsedData );
                 }
             }, null, true );
             GLOBAL.dataControllerCron.start();
@@ -114,7 +119,7 @@ var updateIIRValues = function( options ) {
     var scores = options[ 'scores' ];
     scores.forEach( function( score ) {
         if ( score['iir-score'] ) {
-            score['iir-score'] = score.count * 0.95 + score['iir-score']*0.05;
+            score['iir-score'] = score.count * 0.7 + score['iir-score']*0.3;
             score['count'] = 0;
             iirModel.upsert( function(){}, {
                 "db_name" : options['db_name'],
@@ -126,6 +131,34 @@ var updateIIRValues = function( options ) {
             score['iir-score'] = score.count;
             score['count']=0;
             iirModel.upsert( function(){}, {
+                'db_name' : options['db_name'],
+                'site_name' : options['site_name'],
+                'score' : score
+            } );
+        }
+    });
+}
+
+var updateHybridValues = function( options ) {
+    var scores = options[ 'scores' ];
+    scores.forEach( function( score ) {
+        if ( score['mean'] ) {
+            score[ 'mean' ] = score.mean * 0.3 + score.count * 0.7;
+            score[ 'variance' ] = Math.sqrt( score.variance * score.variance * 0.3 + score.count * score.count * 0.7 );
+            score[ 'hybrid-score' ] = ( score.count - score['mean' ] ) / score.variance;
+            score['count'] = 0;
+            hybridModel.upsert( function(){}, {
+                "db_name" : options['db_name'],
+                "site_name" : options['site_name'],
+                "score" : score
+            } );
+        }
+        else {
+            score['mean'] = score.count;
+            score['variance'] = score.count;
+            score['z-score'] = 0;
+            score['count']=0;
+            hybridModel.upsert( function(){}, {
                 'db_name' : options['db_name'],
                 'site_name' : options['site_name'],
                 'score' : score

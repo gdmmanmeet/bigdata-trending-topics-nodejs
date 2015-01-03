@@ -2,6 +2,7 @@ var zModel = require( '../models/Z' );
 var settings = require('../index');
 var messageModel = require( '../models/Message' );
 var iirModel = require( '../models/IIR' );
+var hybridModel = require( '../models/Hybrid' );
 
 var querystring = require( 'querystring' );
 var jade = require( 'jade' );
@@ -22,6 +23,8 @@ var fetchTrends = function( segments, response, postData ) {
             case 'iir_approach' :
                 var model = iirModel;
                 break;
+            case 'hybrid_approach' :
+                var model = hybridModel;
         }
         model.fetchTrends( function( options ) {
             var tags = options['tags'];

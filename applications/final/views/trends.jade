@@ -4,6 +4,8 @@ div
         a( href = '/final/query/messages/' + db_name + '/' + site_name + '/' + tag.text ) #{tag.text} 
         if approach == 'z_approach'
             span  z-score : #{ tag['z-score'] }
-        if approach == 'iir_approach'
+        else if approach == 'iir_approach'
             span iir-score : #{ tag['iir-score'] }
+        else if approach == 'hybrid_approach'
+            span hybrid-score : #{ tag['hybrid-score'] }
         br
