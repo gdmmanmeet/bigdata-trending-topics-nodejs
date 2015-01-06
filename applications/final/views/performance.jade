@@ -10,8 +10,8 @@ div
         tr
             td Average Ram Usage:
             td 
-                #{ ram.rss / 1000000 } MB rss
+                #{ ( ram.rss / 1000000 ).toFixed( 4 ) } MB resident set size
                 br
-                #{ ram.heapUsed / 1000000 } MB heap used
+                #{ ( ram.heapUsed / 1000000 ).toFixed( 4 ) } MB heap used
                 br
-                #{ ram.heapTotal / 1000000 } MB total heap
+                #{ ( ram.heapTotal / 1000000 ).toFixed( 4 ) } MB total heap

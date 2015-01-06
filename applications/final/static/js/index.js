@@ -30,19 +30,6 @@ $( function() {
             $('.hero-unit').load( '/final/defaultController/dashboard', function(){
                 $( '#data_rate' ).val( data_rate_val );
                 $( '#score_rate' ).val( score_rate_val );
-                $.post('/final/query/trends', {
-                    'db_name' : dbName,
-                    'site_name' : siteName,
-                    'approach' : approach
-                }, function ( data ) {
-                    if ( data ) {
-                        $('#trend_list').html( data );
-                        $( '#trend_list a' ).on( 'click', function() {
-                            $( '#trend_list' ).load( $(this).attr('href') );
-                            return false;
-                        });
-                    }
-                } );
             } );
         }
     });

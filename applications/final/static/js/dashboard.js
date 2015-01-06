@@ -17,7 +17,7 @@ $( function() {
         return false;
     });
 
-    setInterval( function() {
+    setInterval( function fetchTrends() {
         $.post('/final/query/trends', {
             'db_name' : dbName,
             'site_name' : siteName,
@@ -31,7 +31,18 @@ $( function() {
                 });
             }
         } );
-        $( '#performance_widget' ).load( '/final/query/performance' );
-    }, 30000 );
+        $( '#performance_widget' ).load( '/final/query/performance', function(){
+           takeSnapshot();
+        } );
+        return fetchTrends;
+    }(), 30000 );
 
+    takeSnapshot = function() {
+        var trendList = '';
+        $( '#trend_list a' ).each( function( index, element ) {
+            trendList += $( element ).html()+'<br>';
+        } );
+            var snapshotHtml = $( '#snapshot_widget' ).html();
+            $( '#snapshot_widget' ).html( snapshotHtml + '<span>' + new Date().toLocaleTimeString() + '<br/>' + trendList + '</span>' );
+    }
 } );

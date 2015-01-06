@@ -64,7 +64,16 @@ select, input
 
 #snapshot_widget {
     height : 350px;
-    width : 600px;
+    width : 2000%;
+}
+
+#snapshot_widget span {
+    float : left;
+    margin-left : 0.1%;
+}
+
+#snapshots {
+    width : 100%;
     overflow : auto;
 }
 
