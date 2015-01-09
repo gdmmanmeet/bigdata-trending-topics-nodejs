@@ -55,7 +55,12 @@ var throwMessages = function(options){
 	console.log('problem with request'+e.message);
     });
     console.log(data.length);
-    req.write('messages='+JSON.stringify(data)+'&db_name='+options['db_name']+'&site_name='+options['site_name'] + '&approach=' + options['approach'] );
+    req.write( querystring.stringify( {
+        'messages' : JSON.stringify( data ),
+        'db_name' : options[ 'db_name' ],
+        'site_name' : options[ 'site_name' ],
+        'approach' : options['approach']
+    } ) );
     req.end();
     console.log("data store successfully started");
 }
