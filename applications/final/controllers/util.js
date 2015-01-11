@@ -3,10 +3,11 @@ var setVariableInterval = function(callbackFunc,datarate){
         dataRate:datarate,
         callback:callbackFunc,
         stopped:false,
+        offset : 0,
         runLoop:function(){
             if (variableInterval.stopped)
                 return;
-            variableInterval.callback(variableInterval.dataRate);
+            variableInterval.callback( variableInterval.dataRate, variableInterval.offset );
             variableInterval.loop();
         },
         stop: function(){
@@ -22,6 +23,9 @@ var setVariableInterval = function(callbackFunc,datarate){
         },
         changeDataRate : function(newDataRate){
             this.dataRate = newDataRate;
+        },
+        setOffset : function( newOffset ) {
+            this.offset = newOffset;
         }
     };
     return variableInterval.start();

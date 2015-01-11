@@ -20,13 +20,15 @@ var throwData = function ( segments, response, postData ){
         req.write( postData );
         req.end();
         if (!GLOBAL.datasourceInterval) {
-            GLOBAL.datasourceInterval = util.setInterval(function(datarate){
+            GLOBAL.datasourceInterval = util.setInterval( function( datarate, offset ) {
 	            bigDataStore.fetch( throwMessages,{
 	                'data_rate':datarate,
 	                'db_name' : decodeURIComponent(parsedData['db_name']),
 	                'site_name' : decodeURIComponent(parsedData['site_name']),
-                    'approach' : decodeURIComponent( parsedData['approach'] )
+                    'approach' : decodeURIComponent( parsedData['approach'] ),
+                    'offset' : offset
                 });
+                GLOBAL.datasourceInterval.setOffset( offset + parseInt( datarate ) );
             },parsedData['data_rate']);
             GLOBAL.performanceMessageFetchTime = 0;
             GLOBAL.performanceMessageFetchTotal = 0;

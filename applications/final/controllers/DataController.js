@@ -18,8 +18,10 @@ var handledata = function( segments, response, postData ){
        };
        var tags = [];
        messages.forEach(function(tweet){
-           tweet.hashtags.forEach(function(hashtag){
-               tags.push( { "text":hashtag } );
+           tweet.hashtags = tweet.hashtags.map( function( hashtag ) {
+               hashtag = hashtag.toLowerCase();
+               tags.push( { "text" : hashtag } );
+               return hashtag;
            });
        });
        options['tags'] = tags;

@@ -2,9 +2,9 @@ var conn = require('../../../connection');
 var mongodb = require('mongodb');
 
 var fetch = function(callback, options){
-    conn.getConnection('datasets',function(client){
-        var collection = mongodb.Collection(client,'indiana');
-        var messages = collection.find().limit(parseInt(options['data_rate'])).skip(Math.random()*100);
+    conn.getConnection('indiana',function(client){
+        var collection = mongodb.Collection(client,'modi');
+        var messages = collection.find().limit(parseInt(options['data_rate'])).skip( options[ 'offset' ] );
         var data = [];
         messages.each(function(err,doc) {
             if (err){
