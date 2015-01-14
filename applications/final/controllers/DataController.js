@@ -94,7 +94,7 @@ var updateZValues = function( options ) {
             score[ 'mean' ] = ( score.total * score.mean + score.count )/( score.total + 1 );
             score[ 'variance' ] = Math.sqrt( ( score.total * score.variance * score.variance + score.count * score.count ) / ( score.total + 1 ) );
             score[ 'total' ]++;
-            score[ 'z-score' ] = ( score.count - score['mean' ] ) / score.variance;
+            score[ 'z-score' ] = ( score.count - score['mean' ] ) / score.variance + 10000;
             score['count'] = 0;
             zModel.upsert( function(){}, {
                 "db_name" : options['db_name'],
@@ -106,7 +106,7 @@ var updateZValues = function( options ) {
             score['mean'] = score.count;
             score['variance'] = score.count;
             score['total'] = 1;
-            score['z-score'] = 0;
+            score['z-score'] = 10000;
             score['count']=0;
             zModel.upsert( function(){}, {
                 'db_name' : options['db_name'],
@@ -147,7 +147,7 @@ var updateHybridValues = function( options ) {
         if ( score['mean'] ) {
             score[ 'mean' ] = score.mean * 0.3 + score.count * 0.7;
             score[ 'variance' ] = Math.sqrt( score.variance * score.variance * 0.3 + score.count * score.count * 0.7 );
-            score[ 'hybrid-score' ] = ( score.count - score['mean' ] ) / score.variance;
+            score[ 'hybrid-score' ] = ( score.count - score['mean' ] ) / score.variance + 10000;
             score['count'] = 0;
             hybridModel.upsert( function(){}, {
                 "db_name" : options['db_name'],
@@ -158,7 +158,7 @@ var updateHybridValues = function( options ) {
         else {
             score['mean'] = score.count;
             score['variance'] = score.count;
-            score['z-score'] = 0;
+            score['hybrid-score'] = 10000;
             score['count']=0;
             hybridModel.upsert( function(){}, {
                 'db_name' : options['db_name'],
