@@ -32,7 +32,7 @@ var fetchAll = function( callback, options ) {
 var fetchTrends = function( callback, options ) {
     conn.getConnection( options['db_name'], function( client ) {
         collection = mongodb.Collection( client, options['site_name'] + '_z' );
-        var iter = collection.find().sort( { 'z-score' : -1 } ).limit( 10 );
+        var iter = collection.find().sort( { 'z-score' : -1, 'variance' : -1 } ).limit( 10 );
         iter.toArray( function ( err, data ) {
             if ( err ) {
                 console.log( err );

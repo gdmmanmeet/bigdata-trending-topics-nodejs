@@ -12,7 +12,10 @@ div( class = "row-fluid" )
                 h2 Data Source Settings
                 div( class = "row-fluid" )
                     label( for = "data_rate" class = "span5") Change data rate
+                    br
+                    br
                     input( type = "range" id = "data_rate" name = "data_rate" max = 500 class = "span5" )
+                    output
                     br
                     br
 
@@ -20,7 +23,10 @@ div( class = "row-fluid" )
                 h2 Data Handler Settings
                 div( class = "row-fluid" )
                     label( for = "score_rate" class = "span5" ) change the time after which trends are calculated
+                    br
+                    br
                     input( type = "range" id = "score_rate" name = "score_rate" min = 1 max = 10 class = "span5" )
+                    output
                     br
                     br
             div( id = "trend_list" class = "tab-pane" )    trend list

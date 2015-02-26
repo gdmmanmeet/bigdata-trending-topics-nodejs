@@ -28,9 +28,28 @@ $( function() {
             siteName = $( '#site_name' ).val().trim();
             approach = $( '#approach' ).val().trim();
             $('.hero-unit').load( '/final/defaultController/dashboard', function(){
-                $( '#data_rate' ).val( data_rate_val );
-                $( '#score_rate' ).val( score_rate_val );
+                $( '#data_rate' ).val( data_rate_val ).change();
+                $( '#score_rate' ).val( score_rate_val ).change();
             } );
         }
     });
+
+    var valueOutput = function( element ) {
+        var value = element.value;
+        var output = element.parentNode.getElementsByTagName( 'output' )[ 0 ];
+        output.innerHTML = value;
+    }
+
+    var $element = $( '[type="range"]' );
+
+    for( var i  = $element.length - 1; i >=0; i -- )
+        valueOutput( $element[i] );
+
+    $(document).on( 'change', 'input[type="range"]', function( e ) {
+        valueOutput( e.target );
+    } );
+
+    $element.rangeslider( {
+        polyfill : false
+    } );
 });

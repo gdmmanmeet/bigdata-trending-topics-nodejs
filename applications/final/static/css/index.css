@@ -18,6 +18,16 @@ select, input
     padding: 0.5%;
 }
 
+output
+{ 
+    color : white;
+    display : block;
+    font-size : 90%;
+    font-weight : bold;
+    text-align : center;
+    width : 100%;
+}
+
 .hero-unit {
     padding: 60px;
     font-size: 18px;
@@ -87,4 +97,5 @@ select, input
 
 #performance_widget {
     padding-top : 5%;
+    font-size : 98%;
 }

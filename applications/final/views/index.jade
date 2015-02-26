@@ -6,6 +6,7 @@ html(lang="en")
         link( href = staticUrl + "css/bootstrap.css" rel="stylesheet" type="text/css")
         link( rel = "stylesheet" type = "text/css" href = staticUrl + "css/bootstrap-responsive.css" )
         link( rel = "stylesheet" type = "text/css" href = staticUrl + "css/index.css" )
+        link( rel = "stylesheet" type = "text/css" href = staticUrl + "css/rangeslider.css" )
     body
         div( class = "container-fluid hero-unit" )
             div( class = "row-fluid" )
@@ -14,15 +15,16 @@ html(lang="en")
             div( class = "row-fluid" )
                     h2( class = "span12" ) Data Source Settings
              div( class = "row-fluid" )
-                label( for = "data_rate" class = "span5") Select the datarate
-                input( type = "range" id = "data_rate" name = "dataRate" max = 500 class = "span5" data-show-value="true" )
-                br
+                label( for = "data_rate" class = "span5") Select the datarate ( number of messages per second )
+                div( class = "span7" )
+                    input( type = "range" id = "data_rate" name = "dataRate" max = 500 data-show-value="true" )
+                    output
                 br
             div( class = "row-fluid" )
                 h2( class = "span12" ) Data Handler Settings
             div( class = "row-fluid" )
                 label( for = "approach" class = "span5" ) Select the algorithm approach
-                select( id = "approach" name  "approach" class = "span5" )
+                select( id = "approach" name  "approach" class = "span7" )
                     option( value = "z_approach" ) Z-value
                     option( value = "iir_approach" ) IIR approach
                     option( value = "hybrid_approach" ) Hybrid Approach
@@ -30,20 +32,23 @@ html(lang="en")
                 br
             div( class = "row-fluid" )
                 label( for = "db_name" class = "span5" ) Enter the database name
-                input( id = "db_name" name = "db_name" placeholder = "database name" class = "span5" )
+                input( id = "db_name" name = "db_name" placeholder = "database name" class = "span7" )
                 br
                 br
             div( class = "row-fluid" )
                 label( for = "site_name" class = "span5" ) Enter the site name
-                input( id = "site_name" name = "site_name" class = "span5" placeholder = "site name" )
+                input( id = "site_name" name = "site_name" class = "span7" placeholder = "site name" )
                 br
                 br
             div( class = "row-fluid" )
-                label( for = "score_rate" class = "span5" ) Select the time after which the trends are calculated
-                input( id = "score_rate" name = "score_rate" type = "range" min = 1 max = 10 class = "span5" )
+                label( for = "score_rate" class = "span5" ) Select the time after which the trends are calculated ( in minutes )
+                div( class = "span7" )
+                    input( id = "score_rate" name = "score_rate" type = "range" min = 1 max = 10 )
+                    output
                 br
                 br
                 button( class = "span4 btn btn-primary pull-right" id = "start_app" ) Start Application >>
         script(src = staticUrl + "js/jquery-2.1.0.min.js" )
         script(src = staticUrl + "js/bootstrap.min.js" )
+        script( src = staticUrl + "js/rangeslider.min.js" )
         script(src = staticUrl + "js/index.js" )

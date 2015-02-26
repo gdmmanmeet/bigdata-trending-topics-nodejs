@@ -45,4 +45,23 @@ $( function() {
             var snapshotHtml = $( '#snapshot_widget' ).html();
             $( '#snapshot_widget' ).html( snapshotHtml + '<span>' + new Date().toLocaleTimeString() + '<br/>' + trendList + '</span>' );
     }
+ 
+    var valueOutput = function( element ) {
+        var value = element.value;
+        var output = element.parentNode.getElementsByTagName( 'output' )[ 0 ];
+        output.innerHTML = value;
+    }
+
+    var $element = $( '[type="range"]' );
+
+    for( var i  = $element.length - 1; i >=0; i -- )
+        valueOutput( $element[i] );
+
+    $(document).on( 'change', 'input[type="range"]', function( e ) {
+        valueOutput( e.target );
+    } );
+
+    $element.rangeslider( {
+        polyfill : false
+    } );
 } );
