@@ -11,7 +11,7 @@ var templateDirectory = settings.templateDirectory;
 
 var fetchTrends = function( segments, response, postData ) {
     if ( postData ) {
-        response.writeHead( 200, { "content-type" : "text/html" } );
+        response.writeHead( 200, { "content-type" : "application/json" } );
         var parsedData = querystring.parse( postData );
         var dbName = parsedData['db_name'];
         var siteName = parsedData['site_name'];
@@ -28,13 +28,21 @@ var fetchTrends = function( segments, response, postData ) {
         }
         model.fetchTrends( function( options ) {
             var tags = options['tags'];
-            var html = jade.renderFile( templateDirectory + 'trends.jade', {
-                'tags' : tags,
-                'db_name' : dbName,
-                'site_name' : siteName,
-                'approach' : options['approach']
-            } );
-            response.write( html );
+            if( GLOBAL.keywordsDensity ) {
+                var sortedKeywords =Object.keys( GLOBAL.keywordsDensity ).sort( function( c, d ){ return GLOBAL.keywordsDensity[ d ] - GLOBAL.keywordsDensity[ c ]; } ).splice(0, 10);
+                var count = 0;
+                for(var i = 0; i < tags.length; i ++ ) {
+                    if ( sortedKeywords.indexOf( tags[i].text ) != -1 )
+                        count ++;
+                }
+            }
+            response.write( JSON.stringify( {
+               'trending_tags': tags,
+               'expected_tags' : sortedKeywords,
+               'percentage_match' : count * 100 / (sortedKeywords? sortedKeywords.length : 1 ),
+                'site_name': options['site_name'],
+                'db_name': options['db_name']
+            } ) );
             var currentTime = new Date().getTime() - options['request_time'];
             GLOBAL.performanceTagFetchTime = ( GLOBAL.performanceTagFetchTime * GLOBAL.performanceTagFetchTotal + currentTime ) / ( ++GLOBAL.performanceTagFetchTotal );
             response.end();
@@ -69,14 +77,12 @@ var fetchMessages = function( segments, response, postData ) {
 }
 
 var performanceFactors = function( segments, response, postData ) {
-    var html = jade.renderFile( templateDirectory + 'performance.jade', {
-       'message_fetch_time' : GLOBAL.performanceMessageFetchTime,
-       'tag_fetch_time' : GLOBAL.performanceTagFetchTime,
-       'ram' : GLOBAL.performanceRam
-    } );
-    response.writeHead( 200, { 'content-type' : 'text/html' } );
-    response.write( html );
-    response.end();
+    response.writeHead( 200, { 'content-type' : 'application/json' } );
+    response.end( JSON.stringify( {
+        'message_fetch_time': GLOBAL.performanceMessageFetchTime,
+        'tag_fetch_time': GLOBAL.performanceTagFetchTime,
+        'ram': GLOBAL.performanceRam
+    }) );
 }
 
 exports.trends = fetchTrends;

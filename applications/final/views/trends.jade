@@ -1,11 +1,22 @@
 h2 Trending topics
 div
-    for tag in tags
-        a( href = '/final/query/messages/' + db_name + '/' + site_name + '/' + tag.text ) #{tag.text} 
-        if approach == 'z_approach'
-            span  z-score : #{ tag['z-score'] }
-        else if approach == 'iir_approach'
-            span iir-score : #{ tag['iir-score'] }
-        else if approach == 'hybrid_approach'
-            span hybrid-score : #{ tag['hybrid-score'] }
-        br
+    table
+        - var i = 0;
+        for tag in tags
+            tr
+                td
+                    a( href = '/final/query/messages/' + db_name + '/' + site_name + '/' + tag.text ) #{tag.text}
+                td
+                    if approach == 'z_approach'
+                        span  z-score : #{ tag['z-score'] }
+                    else if approach == 'iir_approach'
+                        span iir-score : #{ tag['iir-score'] }
+                    else if approach == 'hybrid_approach'
+                        span hybrid-score : #{ tag['hybrid-score'] }
+                td
+                    if sorted_keywords
+                        span #{sorted_keywords[ i ]}
+                td
+                    if keyword_density
+                        span #{keyword_density[sorted_keywords[ i ] ] }
+            - i ++;

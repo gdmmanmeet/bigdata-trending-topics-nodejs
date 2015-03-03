@@ -87,14 +87,17 @@ output
     overflow : auto;
 }
 
-#trend_list a {
+#trend_list a, #snapshot_widget a {
     color : #F0FF09;
 }
 
-#trend_list a:hover{
+#trend_list a:hover, #snapshot_widget a:hover {
     color: #C0CC09;
 }
 
+#trend_list td, #trend_list th, #snapshot_widget td, #snapshot_widget th {
+    padding : 0 8px;
+}
 #performance_widget {
     padding-top : 5%;
     font-size : 98%;

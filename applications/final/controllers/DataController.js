@@ -89,6 +89,8 @@ var setCron = function( segments, response, postData ) {
 
 var updateZValues = function( options ) {
     var scores = options[ 'scores' ];
+    var keywordCount = {};
+    var totalCount = 0;
     scores.forEach( function( score ) {
         if ( score['mean'] ) {
             score[ 'mean' ] = ( score.total * score.mean + score.count )/( score.total + 1 );
@@ -103,6 +105,8 @@ var updateZValues = function( options ) {
             } );
         }
         else {
+            keywordCount[ score['text'] ] = score['count'];
+            totalCount += score['count'];
             score['mean'] = score.count;
             score['variance'] = score.count;
             score['total'] = 1;
@@ -115,6 +119,10 @@ var updateZValues = function( options ) {
             } );
         }
     });
+    for( key in keywordCount ) {
+        keywordCount[key] /= totalCount;
+    }
+    GLOBAL.keywordsDensity = keywordCount;
 }
 
 var updateIIRValues = function( options ) {
