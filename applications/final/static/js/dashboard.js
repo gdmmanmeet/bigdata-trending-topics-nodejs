@@ -5,6 +5,19 @@ $( function() {
         $( this ).tab( 'show' );
     } );
 
+//Performance graph
+   var line1 = new TimeSeries();
+   var line2 = new TimeSeries();
+   var line3 = new TimeSeries();
+   var smoothie1 = new SmoothieChart({millisPerPixel:1000, minValue:10, maxValue:200, grid:{millisPerLine:30000}});
+   smoothie1.streamTo(document.getElementById("resident-size"));
+   var smoothie2 = new SmoothieChart({millisPerPixel:1000, minValue:10, maxValue:200, grid:{millisPerLine:30000}});
+   smoothie2.streamTo(document.getElementById("heap-used"));
+   var smoothie3 = new SmoothieChart({millisPerPixel:1000, minValue:10, maxValue:200, grid:{millisPerLine:30000}});
+   smoothie3.streamTo(document.getElementById("total-heap"));
+//--------------------------------------------
+
+
     $( '#data_rate' ).change( function() {
         $.post( '/final/source/start', { 'data_rate' : $( '#data_rate' ).val() } );
     } );
@@ -45,17 +58,37 @@ $( function() {
             }
         } );
         $.get( '/final/query/performance', function( data ){
+       var residentSize = ( data[ 'ram' ].rss / 1000000 ).toFixed( 4 ); 
+       var heapUsed = ( data[ 'ram' ].heapUsed / 1000000 ).toFixed( 4 ); 
+       var totalHeap = ( data[ 'ram' ].heapTotal / 1000000 ).toFixed( 4 );
+	console.log(residentSize);
+	console.log(heapUsed);
+	console.log(totalHeap);
             var html = '<div><h2>Performance Factors</h2><table><tr><td> Average Message Fetch Time:</td><td>' +
             data[ 'message_fetch_time' ] + ' ms </td></tr><tr><td> Average Tag Fetch Time: </td><td>' +
             data[ 'tag_fetch_time' ] + ' ms </td></tr><tr><td> Average Ram Usage: </td><td> ' +
-            ( data[ 'ram' ].rss / 1000000 ).toFixed( 4 ) +' MB resident set size <br/>' +
-            ( data[ 'ram' ].heapUsed / 10000000 ).toFixed( 4 ) + ' MB heap used <br/>' +
-            ( data[ 'ram' ].heapTotal / 1000000 ).toFixed( 4 ) + 'MB total heap </td></tr></table></div>';
+            residentSize  +' MB resident set size <br/>' +
+            heapUsed  + ' MB heap used <br/>' +
+            totalHeap  + 'MB total heap </td></tr></table></div>';
             $('#performance_widget').html( html );
             takeSnapshot();
+
+//-----------update performance graphs-----------------
+       line1.append(new Date().getTime(), residentSize);
+       line2.append(new Date().getTime(), heapUsed);
+       line3.append(new Date().getTime(), totalHeap);
+//-------------------------------------------------------
+
         } );
         return fetchTrends;
     }(), 30000 );
+
+//---------smoothie performance graphs -------------
+    smoothie1.addTimeSeries(line1);
+    smoothie2.addTimeSeries(line2);
+    smoothie3.addTimeSeries(line3);
+
+//--------------------------------------------------------
 
     takeSnapshot = function() {
         var trendList = '<table>' +$('#trend_list table').html() +'</table>';

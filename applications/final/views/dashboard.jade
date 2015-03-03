@@ -14,7 +14,7 @@ div( class = "row-fluid" )
                     label( for = "data_rate" class = "span5") Change data rate
                     br
                     br
-                    input( type = "range" id = "data_rate" name = "data_rate" max = 500 class = "span5" )
+                    input( type = "range" id = "data_rate" name = "data_rate" max = 10000 class = "span5" )
                     output
                     br
                     br
@@ -37,5 +37,17 @@ div( class = "row-fluid" )
         div( id = "snapshot_widget" )
             h2 Snapshots
 
+div( id = "performance-graphs" class="row" )
+    div( class="col-md-4" )
+        h3 Resident Size
+        canvas( id = "resident-size" width = "390px" height = "200px" )
+    div( class="col-md-4" )
+        h3 Heap Used
+        canvas( id = "heap-used" width = "390px" height = "200px" )
+    div( class="col-md-4" )
+        h3 Total Heap
+        canvas( id = "total-heap" width = "390px" height = "200px" )
+
+script(src = staticUrl + "js/smoothie.js" )
 script( src = staticUrl + 'js/dashboard.js' )
         
